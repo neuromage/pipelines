@@ -19,6 +19,7 @@ import ArrowRight from '@material-ui/icons/ArrowRight';
 import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Radio from '@material-ui/core/Radio';
@@ -167,6 +168,7 @@ interface CustomTableProps {
 
 interface CustomTableState {
   currentPage: number;
+  isBusy: boolean;
   maxPageIndex: number;
   sortOrder: 'asc' | 'desc';
   pageSize: number;
@@ -182,6 +184,7 @@ export default class CustomTable extends React.Component<CustomTableProps, Custo
 
     this.state = {
       currentPage: 0,
+      isBusy: false,
       maxPageIndex: Number.MAX_SAFE_INTEGER,
       pageSize: 10,
       sortBy: props.initialSortColumn ||
@@ -283,9 +286,15 @@ export default class CustomTable extends React.Component<CustomTableProps, Custo
         </div>
 
         {/* Body */}
-        <div className={commonCss.scrollContainer}>
+        <div className={commonCss.scrollContainer} style={{ minHeight: 60 }}>
+          {/* Busy experience */}
+          {this.state.isBusy && (<React.Fragment>
+            <div className={commonCss.busyOverlay} />
+            <CircularProgress size={30} className={commonCss.absoluteCenter} style={{ zIndex: 2 }} />
+          </React.Fragment>)}
+
           {/* Empty experience */}
-          {this.props.rows.length === 0 && !!this.props.emptyMessage && (
+          {this.props.rows.length === 0 && !!this.props.emptyMessage && !this.state.isBusy && (
             <div className={css.emptyMessage}>{this.props.emptyMessage}</div>
           )}
           {this.props.rows.map((row, i) => {
@@ -383,7 +392,15 @@ export default class CustomTable extends React.Component<CustomTableProps, Custo
       request.sortBy += ' desc';
     }
 
-    return this.props.reload(request);
+    let result = '';
+    this.setStateSafe({ isBusy: true }, async () => {
+      try {
+        result = await this.props.reload(request);
+      } finally {
+        this.setStateSafe({ isBusy: false });
+      }
+    });
+    return Promise.resolve(result);
   }
 
   private setStateSafe(newState: Partial<CustomTableState>, cb?: () => void): void {

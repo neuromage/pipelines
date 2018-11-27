@@ -47,7 +47,10 @@ export default (app: express.Application) => {
   app.use((req, _, next) => {
     // tslint:disable-next-line:no-console
     console.info(req.method + ' ' + req.originalUrl);
-    next();
+    setTimeout(() => {
+      next();
+    }, 1000);
+    // next();
   });
 
   proxyMiddleware(app as any, v1beta1Prefix);
