@@ -204,7 +204,11 @@ class RunList extends React.Component<RunListProps, RunListState> {
     }
 
     await this._getAndSetMetadataAndWorkflows(displayRuns);
+    this.setState({ runs: displayRuns });
+
     await this._getAndSetPipelineNames(displayRuns);
+    this.setState({ runs: displayRuns });
+
     await this._getAndSetExperimentNames(displayRuns);
 
     this.setState({
