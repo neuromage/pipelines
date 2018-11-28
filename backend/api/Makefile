@@ -15,8 +15,8 @@
 all:
 
 	# Delete currently generated code.
-	rm -r ./go_http_client/*
-	rm -r ./go_client/*
+	rm -r -f go_http_client/*
+	rm -r -f go_client/*
 
 	# Compile the *.proto files into *.pb.go (grpc client).
 	protoc -I/usr/local/include -I. \
