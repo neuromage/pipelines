@@ -1,5 +1,3 @@
-load("@com_google_protobuf//:protobuf.bzl", "cc_proto_library")
-
 proto_library(
     name = "resource_reference_proto",
     srcs = ["resource_reference.proto"],
