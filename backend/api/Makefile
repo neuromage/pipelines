@@ -15,11 +15,12 @@
 all:
 
 	# Delete currently generated code.
-	rm -r ./go_http_client/*
-	rm -r ./go_client/*
+	rm -r -f go_http_client/*
+	rm -r -f go_client/*
 
 	# Compile the *.proto files into *.pb.go (grpc client).
 	protoc -I/usr/local/include -I. \
+	  -I${HOME}/protobuf-3.6/include \
 		-I${GOPATH}/src \
 		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
 		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/ \
@@ -28,6 +29,7 @@ all:
 
 	# Compile the *.proto files into *.pb.gw.go (grpc client).
 	protoc -I/usr/local/include -I. \
+	  -I${HOME}/protobuf-3.6/include \
 		-I${GOPATH}/src \
 		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
 		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/ \
@@ -36,6 +38,7 @@ all:
 
   # Compile the *.proto files into *.swagger.json (swagger specification).
 	protoc -I/usr/local/include -I. \
+	  -I${HOME}/protobuf-3.6/include \
 		-I${GOPATH}/src \
 		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
 		-I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/ \
