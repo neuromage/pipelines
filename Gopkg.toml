@@ -157,3 +157,10 @@ required = [
   name = "k8s.io/code-generator"
   # revision for tag "kubernetes-1.11.1"
   revision = "6702109cc68eb6fe6350b83e14407c8d7309fd1a"
+
+[[constraint]]
+  name = "sigs.k8s.io/controller-runtime"
+  revision = "5558165425ef09b6e5c3f61d3457fbeca0d6d579"
+[[constraint]]
+  name = "github.com/google/go-cmp"
+  version = "0.2.0"
