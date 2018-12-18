@@ -1,0 +1,8 @@
+load("@bazel_gazelle//:def.bzl", "gazelle")
+
+# gazelle:prefix github.com/kubeflow/pipelines
+# gazelle:proto disable_global
+# gazelle:exclude vendor
+# gazelle:exclude vendor/github.com/grpc-ecosystem/grpc-gateway
+# gazelle:exclude vendor/github.com/golang/protobuf
+gazelle(name = "gazelle")
